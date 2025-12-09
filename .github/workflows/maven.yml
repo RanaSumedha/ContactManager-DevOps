@@ -1,4 +1,4 @@
-name: Java CI - Maven Build
+name: Java CI/CD Pipeline
 
 on:
   push:
@@ -21,4 +21,17 @@ jobs:
         java-version: 17
 
     - name: Build with Maven
-      run: mvn -B clean verify
+      run: mvn -B clean package
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/contact-manager:latest
