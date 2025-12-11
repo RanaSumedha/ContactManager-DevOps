@@ -1,12 +1,10 @@
-# Use official OpenJDK image
-FROM openjdk:17
+# Use Temurin (modern OpenJDK replacement)
+FROM eclipse-temurin:17-jdk
 
-# Create app directory inside container
 WORKDIR /app
 
-# Copy the generated JAR file from Maven's target folder
-# The wildcard ensures it works no matter the jar name
+# Copy your jar file
 COPY target/*.jar app.jar
 
-# Run the application
+# Run your application
 CMD ["java", "-jar", "app.jar"]
